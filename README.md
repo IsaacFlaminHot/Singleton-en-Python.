@@ -132,6 +132,7 @@ La restricción para evitar la creación de múltiples instancias de la `Central
 
 ## Diagrama UML
 
+``` mermaid
 classDiagram
     class Central_911 {
         -static _instance: Central_911
@@ -148,6 +149,7 @@ classDiagram
     }
 
     Central_911 --> Operador : "asigna llamada a"
+```
 
 ## 3. Conclusiones
 
