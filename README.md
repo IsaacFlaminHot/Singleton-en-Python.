@@ -108,3 +108,33 @@ if __name__ == "__main__":
 
 ```
 
+### El Atributo Estático de la Instancia (`_instance`)
+En el desarrollo de software, un atributo estático es una variable que pertenece a la **clase** y no a los objetos individuales. 
+
+* **Identificación en el código:** Se define al inicio de la clase como `_instance = None`.
+* **Explicación:** Este atributo es el **pilar del Singleton**. Funciona como un contenedor global dentro de la clase que almacena la referencia al único objeto creado. Al ser estático, su valor persiste durante toda la ejecución del programa. Todas las llamadas al método de acceso consultan primero este atributo; si ya contiene un objeto, se devuelve ese mismo, evitando duplicidad.
+
+### El Constructor (`__init__`)
+El constructor es el método encargado de inicializar el estado de un objeto nuevo.
+
+* **Identificación en el código:** Se define mediante el método especial `def __init__(self):`.
+* **Explicación:** En una implementación Singleton, el constructor no debe ser invocado libremente por el usuario. Su función es configurar los atributos iniciales (como el nombre de la central o la lista de operadores) **una sola vez**. En Python, aunque no podemos bloquearlo totalmente como en otros lenguajes, controlamos su ejecución a través del método estático de obtención, asegurando que la configuración inicial ocurra solo cuando se crea la instancia original.
+
+---
+
+## ¿Por qué no se pueden crear múltiples objetos?
+
+La restricción para evitar la creación de múltiples instancias de la `Central_911` se basa en tres mecanismos de control:
+
+1. **Intercepción del Punto de Acceso:** No permitimos que el flujo del programa utilice la creación estándar de objetos. En su lugar, obligamos al uso de `obtener_instancia()`. Este método actúa como un **filtro inteligente** que decide si es necesario fabricar un objeto o entregar uno ya existente.
+2. **Identidad de Memoria Única:** Independientemente de cuántas variables intenten "crear" la central (ej. `llamada1`, `llamada2`, `llamada3`), el método de control siempre retorna la **misma dirección de memoria**. En términos de Python, esto significa que `id(llamada1) == id(llamada2)`.
+3. **Control de Concurrencia (Thread-Safety):** Para evitar que en sistemas con múltiples hilos se creen dos centrales por accidente al mismo tiempo, se implementa un **Bloqueo (Lock)**. Esto garantiza que el proceso de "preguntar y crear" sea atómico: solo una solicitud puede entrar a la vez, asegurando que la segunda solicitud siempre encuentre la instancia ya creada por la primera.
+
+
+
+---
+
+## 3. Conclusiones
+
+Creo que poco a poco va teniendo mas logica el uso funcional de estos patrones, en este caso, aprendi algo nuevo, como el threading, y el tema de los hilos a la hora de querer invocar varias instancia y verificar que ya exista una sola. Un patron que definitivamente necesito explorar más.
+
