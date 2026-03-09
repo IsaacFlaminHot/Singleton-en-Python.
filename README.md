@@ -130,9 +130,24 @@ La restricción para evitar la creación de múltiples instancias de la `Central
 2. **Identidad de Memoria Única:** Independientemente de cuántas variables intenten "crear" la central (ej. `llamada1`, `llamada2`, `llamada3`), el método de control siempre retorna la **misma dirección de memoria**. En términos de Python, esto significa que `id(llamada1) == id(llamada2)`.
 3. **Control de Concurrencia (Thread-Safety):** Para evitar que en sistemas con múltiples hilos se creen dos centrales por accidente al mismo tiempo, se implementa un **Bloqueo (Lock)**. Esto garantiza que el proceso de "preguntar y crear" sea atómico: solo una solicitud puede entrar a la vez, asegurando que la segunda solicitud siempre encuentre la instancia ya creada por la primera.
 
+## Diagrama UML
 
+classDiagram
+    class Central_911 {
+        -static _instance: Central_911
+        -static _lock: Lock
+        +central: String
+        +static obtener_instancia() Central_911
+        +conectar_llamada(operador, tipo)
+    }
 
----
+    class Operador {
+        +id_operador: int
+        +nombre: String
+        +atiende_emergencia(tipo)
+    }
+
+    Central_911 --> Operador : "asigna llamada a"
 
 ## 3. Conclusiones
 
